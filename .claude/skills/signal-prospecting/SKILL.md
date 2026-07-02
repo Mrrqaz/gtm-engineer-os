@@ -93,7 +93,7 @@ Summarize the cycle: accounts checked, gated out at ICP (with layer breakdown co
 
 ## Worked Example (Rivergate Data pilot segment, fictional)
 
-Marcus asked for signal-based prospecting piloted on one segment before company-wide rollout (`context/people/marcus-iyer-head-of-growth.md`, open items, 2026-06-25). Segment for this pilot: **mid-market B2B SaaS accounts, 50-150 employees, that churned a competitor tool in the last 6 months** — Rivergate's strongest historical win pattern.
+Marcus asked for signal-based prospecting piloted on one segment before company-wide rollout (`context/people/marcus-iyer-head-of-growth.md`, open items, 2026-06-19; adopted `context/decisions-log.md`, 2026-06-25). Segment for this pilot: **mid-market B2B SaaS accounts, 50-150 employees, that churned a competitor tool in the last 6 months** — Rivergate's strongest historical win pattern.
 
 Pasted in for this run: three accounts with LinkedIn and Crunchbase data manually exported (no live Clay/LinkedIn API — see Intended Integrations).
 

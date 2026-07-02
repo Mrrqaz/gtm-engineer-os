@@ -78,7 +78,9 @@ Stage transitions require crossing both dimensions where stated. Never skip a st
 
 If a lead's stage in the source record disagrees with what the criteria above say it should be, flag the mismatch rather than silently overwriting it — that's a data-hygiene gap for the rep or ops owner to resolve, same principle as cross-file disagreement in any other skill in this repo.
 
-**Inbound-hot definition:** a lead that hits Fit = High and Engagement = Hot *from a single inbound action* (demo request, pricing page + contact form in the same session) is inbound-hot regardless of current lifecycle stage. This is the trigger for the SLA in Step 6.
+**Inbound-hot definition:** a lead that hits Fit = High and Engagement = Hot *from a single inbound action* is inbound-hot regardless of current lifecycle stage. This is the trigger for the SLA in Step 6.
+
+**Named override — demo request + pricing visit, same session:** a same-session demo request combined with a pricing-page visit also qualifies as inbound-hot at Fit = High, even when the raw engagement point sum lands in Warm (25-59) rather than clearing the 60-point Hot threshold on its own. A demo request is a stronger buying signal than the additive point scale gives it credit for — someone who visited pricing and asked for a demo in the same session isn't a "40-point lead," they're a lead who just told you they're ready, and the scoring table wasn't built to weight that combination correctly on its own. This mirrors the named job-change-plus-funding override in `signal-prospecting`: a specific, evidence-backed combo beats the raw point sum, but it's a named exception, not a silent one. No other Warm-tier engagement combination qualifies as inbound-hot without a same-session demo request specifically — a lead sitting at 40 points from webinar attendance and email clicks, with no demo request, is Warm, not inbound-hot.
 
 ## Step 5: Choose the Routing Method
 
@@ -109,10 +111,10 @@ Company size 220 → 25. Industry B2B SaaS → 20. Tech stack: currently runs a 
 
 **Step 3 — Engagement:**
 Pricing page visit → +15. Demo request → +25. Same session, no other history.
-**Engagement = 40.** Under the 60 threshold for Hot on its own, but the demo-request-plus-pricing-visit combination is the explicit inbound-hot trigger regardless of the raw engagement number.
+**Engagement = 40 (Warm).** Under the 60-point Hot threshold on the raw scale, but the demo-request-plus-pricing-visit combination triggers the Named override in Step 4, not the base Fit-High-and-Engagement-Hot rule.
 
 **Step 4 — Lifecycle:**
-No prior record for Jordan. Fit High + Engagement present → enters as **Lead**, then immediately **MQL** (Fit High crosses Medium/High, and the demo request is a qualifying engagement event even though the cumulative engagement score sits at 40, because the demo-request signal itself is the qualifying action, not the score threshold). Flagged **inbound-hot** per the Step 4 definition (High fit + demo request + pricing visit in one session).
+No prior record for Jordan. Fit High + Engagement present → enters as **Lead**, then immediately **MQL** (Fit High crosses Medium/High, and the demo request is a qualifying engagement event even though the cumulative engagement score sits at 40, because the demo-request signal itself is the qualifying action, not the score threshold). Flagged **inbound-hot** per the Named override (Fit High + same-session demo request + pricing visit, engagement points aside).
 
 **Step 5 — Routing:**
 No named-account match (new company, no existing Rivergate contact). No territory owner specifically assigned to this segment. Skill check: nothing product-specific stated in the demo request. Falls to round-robin. Next rep in queue: **Priya Nandakumar**.
