@@ -4,6 +4,32 @@ A Claude Code operating system built for a GTM Engineer / Growth Engineer / RevO
 
 The GTM Engineer job is closer to "part AE, part sales engineer, part data engineer" than a marketing role: the output is pipeline, generated and moved by systems, not campaigns run by hand. This repo is 12 of those systems, each specified with real decision logic (scoring formulas, thresholds, gates), not prompt filler.
 
+## System map
+
+This isn't 12 unrelated skills — it's a pipeline, with a few supporting skills that inform decisions inside it rather than sitting in the main flow:
+
+```mermaid
+flowchart LR
+    SIG[signal-prospecting] --> ENR[waterfall-enrichment]
+    ENR --> ROUTE[lead-routing]
+    ROUTE --> SEND{{"Outreach send"}}
+    SEND --> REPLY[reply-triage]
+    REPLY --> EXP[campaign-experiment-design]
+
+    ROUTE --> PIPE[pipeline-forecast-review]
+    PIPE --> BRIEF[exec-revenue-briefing]
+
+    ENR --> COL[collateral-generator]
+
+    CI[competitive-intel-monitor] -.informs.-> EXP
+    GEP[growth-experiment-prioritizer] -.ranks.-> EXP
+    LST[lifecycle-signal-tracker] -.feeds.-> ROUTE
+
+    style SEND fill:#f4f4f4,stroke:#333,stroke-width:2px
+```
+
+`crm-hygiene-audit` runs underneath all of this — it's the data-integrity check that keeps the pipeline's inputs (dedup, field quality) trustworthy, not a step in the outreach flow itself.
+
 ## The skills
 
 | Skill | What it does | Category |
