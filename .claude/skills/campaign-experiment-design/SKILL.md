@@ -12,8 +12,8 @@ Most outbound "tests" aren't tests. Someone changes the list and the copy at the
 
 ## Operating Rules (read first)
 
-- **One variable at a time, by default.** List-only and copy-only are the two clean experiment types. Combined (both list and copy change) is allowed only when explicitly time-constrained, and every combined result gets flagged as harder to attribute — never reported with the same confidence as a single-variable test.
-- **No launch without a sample-size check.** Before any test goes live, estimate baseline reply/open rate from historical data for that segment and confirm the available volume can plausibly reach a usable read in the test window. If it can't, don't launch it as a test — say so and propose a different question.
+- **One variable at a time, by default.** List-only and copy-only are the two clean experiment types. Combined (both list and copy change) is allowed only when explicitly time-constrained, and every combined result gets flagged as harder to attribute, never reported with the same confidence as a single-variable test.
+- **No launch without a sample-size check.** Before any test goes live, estimate baseline reply/open rate from historical data for that segment and confirm the available volume can plausibly reach a usable read in the test window. If it can't, don't launch it as a test. Say so and propose a different question.
 - **Success/failure/inconclusive get defined before launch, in writing.** Not after looking at the numbers. If someone asks "so did it work?" and the answer requires deciding *right then* what would have counted as working, the test wasn't designed, it was run.
 - **Every conclusion carries a confidence tag.** HIGH, MEDIUM, or LOW, based on whether the actual sample reached matches what was pre-declared as the minimum. A result on an underpowered sample is still reportable, it just can't be reported as if it weren't underpowered.
 - **This is deliberately not a full stats engine.** The sample-size table below is illustrative and directional, built for outbound volumes and go/no-go decisions, not for publishing a p-value. If a call is genuinely borderline, extend the test window before trusting a marginal read.
@@ -56,7 +56,7 @@ Compare the table's minimum against what the segment or list can actually delive
 Before launch, write down all three, not just what a win looks like:
 
 - **Success**: the specific threshold that counts as a real, actionable win (e.g., "variant B reply rate is at least 50% relative higher than variant A, with both variants having reached the Step 3 minimum sample").
-- **Failure**: the specific threshold that counts as a real, actionable loss (e.g., "variant B reply rate is equal to or below variant A after both reach minimum sample" — not "worse by some amount," equal-or-worse is still informative and should be captured, not thrown away as noise).
+- **Failure**: the specific threshold that counts as a real, actionable loss (e.g., "variant B reply rate is equal to or below variant A after both reach minimum sample", not "worse by some amount." Equal-or-worse is still informative and should be captured, not thrown away as noise).
 - **Inconclusive**: what happens if the test window closes before either variant reaches the Step 3 minimum sample, or the result sits inside a range too close to call either way. This is the outcome people forget to define, and it's the one that gets argued about after the fact if it isn't written down first.
 
 This declaration gets written into the test record before the first send, not drafted after the numbers come in. If the question "did it work" can only be answered by relitigating what "work" means, the test wasn't designed.
@@ -85,8 +85,8 @@ Pre-declared inconclusive condition: [threshold/window]
 Actual sample reached: A=[n], B=[n]
 Actual result: A=[rate], B=[rate]
 Verdict: [Success | Failure | Inconclusive]
-Confidence: [HIGH | MEDIUM | LOW] — [one line why]
-Attribution note: [only for combined tests — what follow-up single-variable test would confirm which variable drove it]
+Confidence: [HIGH | MEDIUM | LOW] - [one line why]
+Attribution note: [only for combined tests: what follow-up single-variable test would confirm which variable drove it]
 ```
 
 ## Intended Integrations (not live in this demo)
@@ -99,23 +99,23 @@ Attribution note: [only for combined tests — what follow-up single-variable te
 
 Marcus Iyer wants to test whether leading with a funding-signal hook out-performs the current generic cold-open on Rivergate's mid-market SaaS segment.
 
-**Step 1 — type:** Copy-only. The list (mid-market SaaS, ICP-fit score >= 7) stays fixed; only the opening line changes. Variant A is the current generic open, Variant B leads with "saw you just raised your Series B."
+**Step 1 (type):** Copy-only. The list (mid-market SaaS, ICP-fit score >= 7) stays fixed; only the opening line changes. Variant A is the current generic open, Variant B leads with "saw you just raised your Series B."
 
-**Step 2 — baseline:** Pulling the last 90 days of sends to this segment, reply rate has been running ~3.5%. That's comfortably above the 1% sanity floor, so the test is a real candidate.
+**Step 2 (baseline):** Pulling the last 90 days of sends to this segment, reply rate has been running ~3.5%. That's comfortably above the 1% sanity floor, so the test is a real candidate.
 
-**Step 3 — sample size:** Marcus wants to detect at least a 50% relative lift (3.5% -> ~5.25%+). Per the table, that needs roughly 300-500 sends per variant. Rivergate's mid-market SaaS segment only has ~450 leads total that qualify this month, well short of 600-1,000 combined across two variants in a normal window.
+**Step 3 (sample size):** Marcus wants to detect at least a 50% relative lift (3.5% -> ~5.25%+). Per the table, that needs roughly 300-500 sends per variant. Rivergate's mid-market SaaS segment only has ~450 leads total that qualify this month, well short of 600-1,000 combined across two variants in a normal window.
 
-This is the exact gate Marcus pushed back on in the 2026-06-18 review of this skill (see `context/decisions-log.md` and his file in `context/people/`): the default minimum was calibrated for a larger list than Rivergate actually has. Rather than skip the gate, the threshold gets adjusted per-segment: for this segment, the test is redesigned to detect a 2x lift instead of 50% (needing only ~100-150 per variant, achievable within the available list), and the test window is extended from two weeks to four to let both variants actually clear that smaller minimum. The gate itself doesn't move, the target lift and the window do.
+This is the exact gate Marcus pushed back on in the 2026-06-18 review of this skill (see his file in `context/people/`): the default minimum was calibrated for a larger list than Rivergate actually has. Rather than skip the gate, the threshold gets adjusted per-segment: for this segment, the test is redesigned to detect a 2x lift instead of 50% (needing only ~100-150 per variant, achievable within the available list), and the test window is extended from two weeks to four to let both variants actually clear that smaller minimum. The gate itself doesn't move, the target lift and the window do.
 
-**Step 4 — pre-declared:**
+**Step 4 (pre-declared):**
 - Success: Variant B reply rate is at least 2x Variant A's, with both variants at or above 120 sends.
 - Failure: Variant B reply rate is equal to or below Variant A's after both reach 120 sends.
 - Inconclusive: the four-week window closes with either variant under 120 sends, or Variant B is directionally higher but under the 2x threshold.
 
-**Step 5 — result (illustrative):** After four weeks, A reached 135 sends at 3.0% reply, B reached 128 sends at 7.8% reply — a 2.6x lift, clearing the pre-declared 2x success threshold with both variants past the adjusted 120-send minimum.
+**Step 5 (result, illustrative):** After four weeks, A reached 135 sends at 3.0% reply, B reached 128 sends at 7.8% reply, a 2.6x lift, clearing the pre-declared 2x success threshold with both variants past the adjusted 120-send minimum.
 
 ```
-Test: Funding-signal open vs generic open — mid-market SaaS
+Test: Funding-signal open vs generic open - mid-market SaaS
 Type: copy-only
 Segment(s)/List(s): mid-market SaaS, ICP score >= 7
 Variants: A) generic cold-open  B) funding-signal-led open
@@ -128,8 +128,8 @@ Pre-declared inconclusive condition: either variant under 120 sends at window cl
 Actual sample reached: A=135, B=128
 Actual result: A=3.0%, B=7.8%
 Verdict: Success
-Confidence: HIGH — both variants cleared the pre-declared 120-send minimum and the result sits clearly past the 2x threshold, not a borderline read
-Attribution note: n/a — copy-only test, list held constant
+Confidence: HIGH - both variants cleared the pre-declared 120-send minimum and the result sits clearly past the 2x threshold, not a borderline read
+Attribution note: n/a - copy-only test, list held constant
 ```
 
 Next step flagged to Marcus: this validates the funding-signal hook on mid-market SaaS specifically. Rolling it out to other segments is a new test, not an assumption, the lift doesn't automatically transfer to a segment with a different baseline or buyer profile.

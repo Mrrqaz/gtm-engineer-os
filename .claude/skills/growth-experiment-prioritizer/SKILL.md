@@ -8,7 +8,7 @@ user_invocable: true
 
 The job isn't to bless one idea, it's to force every proposed experiment and every channel bet onto the same comparable scale so the backlog reflects actual expected value, not whoever pitched loudest last. Two different questions get asked here, and they need two different tools: "which experiment should we build next" (RICE/ICE) and "should we keep spending on this channel" (unit economics). Confusing them produces bad calls in both directions, a channel doing 3:1 LTV:CAC scored on RICE looks unremarkable next to a flashy small test, and a scrappy no-budget experiment forced through a CAC model returns garbage because it has no unit economics yet.
 
-**Adapted from:** deanpeters' `Product-Manager-Skills` repo (github.com/deanpeters/Product-Manager-Skills) — `skills/prioritization-advisor/SKILL.md` (RICE/ICE/Value-Effort/Kano routing engine) and `skills/acquisition-channel-advisor/SKILL.md` (4-step channel evaluation with CAC/LTV/payback thresholds). This skill narrows that broader PM toolkit to the two frameworks that matter for GTM experimentation and adapts the worked example to Rivergate Data.
+**Adapted from:** deanpeters' `Product-Manager-Skills` repo (github.com/deanpeters/Product-Manager-Skills): `skills/prioritization-advisor/SKILL.md` (RICE/ICE/Value-Effort/Kano routing engine) and `skills/acquisition-channel-advisor/SKILL.md` (4-step channel evaluation with CAC/LTV/payback thresholds). This skill narrows that broader PM toolkit to the two frameworks that matter for GTM experimentation and adapts the worked example to Rivergate Data.
 
 ## Operating Rules (read first)
 
@@ -26,7 +26,7 @@ The job isn't to bless one idea, it's to force every proposed experiment and eve
 - **HubSpot/Salesforce** would supply Reach inputs (accounts/contacts in a given segment) for RICE scoring, so Reach isn't an eyeballed guess.
 - None of these are wired into this repo. This is a demonstration of the scoring and routing logic; every number in the worked example below is either seeded in `context/` or explicitly marked as an estimate supplied at run time.
 
-## Step 1: Intake — Route the Idea
+## Step 1: Intake (Route the Idea)
 
 Ask (or infer from what's already been provided) these four questions before scoring anything:
 
@@ -74,8 +74,8 @@ Use this instead of RICE/ICE whenever Step 1 routes to a channel spend decision 
 
 **1. Unit Economics Check**
 - **CAC** (Customer Acquisition Cost) = total fully-loaded channel spend ÷ customers acquired in the period.
-- **LTV:CAC ratio** — illustrative thresholds: **below 3:1 is concerning** (channel likely losing money once churn and servicing cost are counted), **3:1 to 5:1 is healthy**, **above 5:1** is strong but worth checking whether the channel is under-invested relative to its return.
-- **Payback Period** (months to recover CAC from gross margin) — illustrative thresholds: **under 12 months is healthy** for most B2B SaaS motions, **12–18 months is workable** if the business has the cash runway, **over 18 months is a red flag** unless there's a clear strategic reason (land-and-expand, category creation).
+- **LTV:CAC ratio**, illustrative thresholds: **below 3:1 is concerning** (channel likely losing money once churn and servicing cost are counted), **3:1 to 5:1 is healthy**, **above 5:1** is strong but worth checking whether the channel is under-invested relative to its return.
+- **Payback Period** (months to recover CAC from gross margin), illustrative thresholds: **under 12 months is healthy** for most B2B SaaS motions, **12–18 months is workable** if the business has the cash runway, **over 18 months is a red flag** unless there's a clear strategic reason (land-and-expand, category creation).
 
 **2. Customer Quality Check**
 - Compare the channel's cohort against company-average benchmarks on: 90-day retention, expansion rate, and NPS/support-ticket volume if available.
@@ -87,17 +87,17 @@ Use this instead of RICE/ICE whenever Step 1 routes to a channel spend decision 
 
 **4. Recommendation**
 Land on exactly one of four calls, and state the number(s) that drove it:
-- **Scale** — LTV:CAC ≥ 3:1, payback ≤ 12–18mo, quality checks clean, Magic Number ≥ 0.75, and real headroom. Increase spend.
-- **Test** — economics are borderline or data is thin (new channel, small sample). Keep current spend, run a bounded test with a pre-declared threshold before committing more.
-- **Kill** — LTV:CAC below 3:1 *and* no credible path to improve it (quality check also weak, or payback over 18mo with no strategic offset). Stop spend, redirect budget.
-- **Invest-to-Learn** — economics are currently bad or unproven, but there's a strategic reason to keep a small, capped spend running (new-category bet, competitive-intel value, land a logo type Sales needs). Name the cap and the review date explicitly, this is not a blank check.
+- **Scale**: LTV:CAC ≥ 3:1, payback ≤ 12–18mo, quality checks clean, Magic Number ≥ 0.75, and real headroom. Increase spend.
+- **Test**: economics are borderline or data is thin (new channel, small sample). Keep current spend, run a bounded test with a pre-declared threshold before committing more.
+- **Kill**: LTV:CAC below 3:1 *and* no credible path to improve it (quality check also weak, or payback over 18mo with no strategic offset). Stop spend, redirect budget.
+- **Invest-to-Learn**: economics are currently bad or unproven, but there's a strategic reason to keep a small, capped spend running (new-category bet, competitive-intel value, land a logo type Sales needs). Name the cap and the review date explicitly, this is not a blank check.
 
-## Step 4: Output — Ranked Backlog
+## Step 4: Output (Ranked Backlog)
 
 Never return a single score in isolation. Present every item scored in this session (or pulled from the standing backlog if re-ranking) as one table, sorted highest to lowest within its own framework, with channel-evaluation items called out separately since their "score" is a recommendation, not a number comparable to RICE/ICE.
 
 ```
-GROWTH BACKLOG — [date]
+GROWTH BACKLOG - [date]
 
 RICE-SCORED
 # | Idea | Reach | Impact | Confidence | Effort | Score | Notes
@@ -114,29 +114,29 @@ Flag anything that failed the Operating Rules gate (unsupported Confidence, miss
 
 ## Worked Example (Rivergate Data, fictional)
 
-Marcus Iyer, Head of Growth Marketing, has three things on the table this week and wants them on one backlog, not scattered across a Slack thread — this is literally an open item on his stakeholder file: *"Wants the ICE/RICE growth-experiment backlog to be the single source of truth for what gets built next, not a Slack thread."*
+Marcus Iyer, Head of Growth Marketing, has three things on the table this week and wants them on one backlog, not scattered across a Slack thread. This is literally an open item on his stakeholder file: *"Wants the ICE/RICE growth-experiment backlog to be the single source of truth for what gets built next, not a Slack thread."*
 
-**Item 1 — "Add a job-change signal alert to the outbound sequence trigger."** Marcus wants this piloted on one segment first (his standing ask), not shipped company-wide, so Reach is scoped to that segment. Est. Reach: 180 target accounts/quarter in the pilot segment. Impact: 2 (high, job-change is a proven trigger type elsewhere but unproven at Rivergate). Confidence: 60% — no Rivergate-specific data yet, based on published benchmarks from comparable B2B tools. Effort: 3 person-weeks (GTM engineering + one growth marketer).
+**Item 1: "Add a job-change signal alert to the outbound sequence trigger."** Marcus wants this piloted on one segment first (his standing ask), not shipped company-wide, so Reach is scoped to that segment. Est. Reach: 180 target accounts/quarter in the pilot segment. Impact: 2 (high, job-change is a proven trigger type elsewhere but unproven at Rivergate). Confidence: 60%, no Rivergate-specific data yet, based on published benchmarks from comparable B2B tools. Effort: 3 person-weeks (GTM engineering + one growth marketer).
 
 RICE = (180 × 2 × 0.6) / 3 = **72**
 
-**Item 2 — "Swap the demo-request CTA copy on the pricing page."** Impact: 6/10 (pricing-page CTAs are high-leverage but this is one line of copy, not a redesign). Confidence: 7/10 (two prior copy tests on this page moved conversion, this is a similar swap). Ease: 9/10 (one afternoon, no engineering).
+**Item 2: "Swap the demo-request CTA copy on the pricing page."** Impact: 6/10 (pricing-page CTAs are high-leverage but this is one line of copy, not a redesign). Confidence: 7/10 (two prior copy tests on this page moved conversion, this is a similar swap). Ease: 9/10 (one afternoon, no engineering).
 
 ICE = 6 × 7 × 9 = **378** (normalized against other ICE items only, not compared directly to RICE scores)
 
-**Item 3 — "Should we scale the LinkedIn outbound channel?"** This is a channel-spend question — Step 1 routes it away from RICE/ICE entirely.
+**Item 3: "Should we scale the LinkedIn outbound channel?"** This is a channel-spend question. Step 1 routes it away from RICE/ICE entirely.
 - CAC: $1,850 (from Q2 spend ÷ closed-won attributed to the channel).
-- LTV: $7,200 (Rivergate's blended LTV, no channel-specific adjustment yet — flagged as an estimate).
+- LTV: $7,200 (Rivergate's blended LTV, no channel-specific adjustment yet, flagged as an estimate).
 - LTV:CAC = 3.9:1 → healthy.
 - Payback: 9 months → healthy.
 - Quality check: 90-day retention for LinkedIn-sourced customers is in line with company average; no red flag.
 - Magic Number: 0.68 (workable, not yet clearly efficient).
-- **Recommendation: Test** — economics are healthy but Magic Number is borderline and the LTV figure is a blended estimate, not channel-specific. Before calling this Scale, get a channel-specific LTV pull (would come from the data warehouse integration named above) and re-run this check next quarter.
+- **Recommendation: Test.** Economics are healthy but Magic Number is borderline and the LTV figure is a blended estimate, not channel-specific. Before calling this Scale, get a channel-specific LTV pull (would come from the data warehouse integration named above) and re-run this check next quarter.
 
 Also flagged: the pricing-page-change monitor Marcus asked for (competitor cut price 15% last quarter, caught via a lost deal, not monitoring) isn't a growth experiment at all, it's a competitive-intel gap. Noted here so it doesn't get lost, but routed out of this backlog to the monitoring skill that owns it.
 
 ```
-GROWTH BACKLOG — 2026-07-02
+GROWTH BACKLOG - 2026-07-02
 
 RICE-SCORED
 # | Idea                                  | Reach | Impact | Confidence | Effort | Score | Notes
@@ -148,7 +148,7 @@ ICE-SCORED
 
 CHANNEL DECISIONS
 Channel            | LTV:CAC | Payback | Magic # | Quality flag | Recommendation
-LinkedIn outbound  | 3.9:1   | 9mo     | 0.68    | none         | Test — LTV figure is blended, re-run channel-specific next quarter
+LinkedIn outbound  | 3.9:1   | 9mo     | 0.68    | none         | Test - LTV figure is blended, re-run channel-specific next quarter
 ```
 
 ## Rules

@@ -12,8 +12,8 @@ CRM data doesn't rot randomly. It rots in the same handful of places every time:
 
 This skill's mechanics aren't invented from scratch. Two open-source skill packs are the direct source, credited here rather than silently reused:
 
-- **elijeangilles/revops-skills** (`salesforce-revops-audit`) — the weighted, 100-point-baseline scoring formula across five named dimensions is adapted from this repo's audit skill.
-- **TomGranot/hubspot-admin-skills** (32 skills) — the dual-pass dedup mechanic (from `merge-duplicate-companies`), the Plan → Baseline → Execute → Verify-diff scaffold used across that whole repo, and the orphaned-record cleanup pattern are adapted from here.
+- **elijeangilles/revops-skills** (`salesforce-revops-audit`): the weighted, 100-point-baseline scoring formula across five named dimensions is adapted from this repo's audit skill.
+- **TomGranot/hubspot-admin-skills** (32 skills): the dual-pass dedup mechanic (from `merge-duplicate-companies`), the Plan → Baseline → Execute → Verify-diff scaffold used across that whole repo, and the orphaned-record cleanup pattern are adapted from here.
 
 ## Operating Rules (read first)
 
@@ -27,7 +27,7 @@ This skill's mechanics aren't invented from scratch. Two open-source skill packs
 
 - **HubSpot API** (or **Salesforce API / SOQL**) would power every pull in this skill: open opportunities, activity timestamps, stage/probability pairs, owner status, company/contact records for dedup. Right now this skill reads whatever CRM export or CSV the user provides.
 - **HubSpot Workflows API** or **Salesforce flow/automation** would eventually auto-flag orphaned records the moment an owner is deactivated, instead of catching it on the next scheduled audit.
-- **Clay** enrichment webhook would auto-populate the fields reps currently re-key by hand (see Dana Whitfield's flag below) — the fix for that specific finding lives outside this skill, but this skill is what surfaces the finding.
+- **Clay** enrichment webhook would auto-populate the fields reps currently re-key by hand (see Dana Whitfield's flag below). The fix for that specific finding lives outside this skill, but this skill is what surfaces the finding.
 - None of this is wired here. Every step below runs on a pasted or attached CSV export, and says so plainly when no data has been provided.
 
 ## Step 1: Establish the Baseline Snapshot
@@ -38,7 +38,7 @@ Save this as the baseline. Every later diff in Step 5 compares against this file
 
 ## Step 2: Score the Five Dimensions
 
-Each dimension starts at **100** and takes named deductions. Final dimension score floors at 0 (deductions don't go negative). Deductions are additive within a dimension — if three triggers fire, all three deductions apply.
+Each dimension starts at **100** and takes named deductions. Final dimension score floors at 0 (deductions don't go negative). Deductions are additive within a dimension: if three triggers fire, all three deductions apply.
 
 ### Pipeline Health (weight: 25%)
 - **-20** if more than 25% of open opportunities have no logged activity in 14+ days
@@ -82,9 +82,9 @@ Grade the composite: **A** 90-100, **B** 80-89, **C** 70-79, **D** 60-69, **F** 
 
 ## Step 3: Run the Dual-Pass Dedup
 
-**Pass 1 — Normalized-domain exact match (high confidence).** Strip protocol, `www.`, and trailing slash from every company record's domain field, lowercase it, and match exactly. Two company records with the same normalized domain are treated as a confirmed duplicate pair, no human judgment needed to identify them, though the merge itself still needs approval (Step 4).
+**Pass 1, Normalized-domain exact match (high confidence).** Strip protocol, `www.`, and trailing slash from every company record's domain field, lowercase it, and match exactly. Two company records with the same normalized domain are treated as a confirmed duplicate pair, no human judgment needed to identify them, though the merge itself still needs approval (Step 4).
 
-**Pass 2 — Normalized-name fuzzy match (higher false-positive risk).** For records that didn't match on domain, normalize company names (strip legal suffixes like Inc/LLC/Ltd, lowercase, strip punctuation) and run a similarity match. Flag pairs above the similarity threshold as **candidates only**. This pass catches real duplicates that Pass 1 misses (a company with two different domains, a rebrand, a typo'd domain) but also throws false positives (two genuinely different companies with similar generic names). Every Pass 2 result is labeled `REVIEW REQUIRED — name-match, not domain-confirmed` and never auto-queued for merge the way a Pass 1 match can be.
+**Pass 2, Normalized-name fuzzy match (higher false-positive risk).** For records that didn't match on domain, normalize company names (strip legal suffixes like Inc/LLC/Ltd, lowercase, strip punctuation) and run a similarity match. Flag pairs above the similarity threshold as **candidates only**. This pass catches real duplicates that Pass 1 misses (a company with two different domains, a rebrand, a typo'd domain) but also throws false positives (two genuinely different companies with similar generic names). Every Pass 2 result is labeled `REVIEW REQUIRED: name-match, not domain-confirmed` and never auto-queued for merge the way a Pass 1 match can be.
 
 Contact-record dedup follows the same two passes: Pass 1 on normalized email domain + exact email match, Pass 2 on normalized full name within the same company record.
 
@@ -117,7 +117,7 @@ Dana Whitfield (VP Sales) flagged that reps are manually re-entering data Clay a
 Baseline CSV: 340 open opportunities, 890 company records, 1,240 contact records.
 
 ```
-CRM Hygiene Audit — Rivergate Data — 2026-07-02
+CRM Hygiene Audit - Rivergate Data - 2026-07-02
 
 COMPOSITE: 69 / 100 (D)
 
@@ -131,7 +131,7 @@ Pipeline Health (weight 25%)
 Data Quality (weight 20%)
   -20  24% of contacts missing both email and phone
   -15  18% of company records show a hand-typed field conflicting with a
-       known Clay-enriched value — this is Dana's exact complaint,
+       known Clay-enriched value, this is Dana's exact complaint,
        confirmed in the data, not just anecdotal
   -10  Clay-enriched "company size" field hand-overwritten on 14 records
        in the last 30 days (capped deduction)
@@ -141,7 +141,7 @@ Data Quality (weight 20%)
 Forecast Hygiene (weight 25%)
   -25  N/A, Commit/Best Case activity is current
   -15  Late-stage deals (Negotiation, Verbal) missing next-step field: 22%
-       of that population — this is what "at-risk before Friday" means
+       of that population, this is what "at-risk before Friday" means
        concretely
   -15  N/A
   -10  N/A
@@ -189,7 +189,7 @@ Auto-executable on approval:
      attached, not auto-assigned).
 
 Requires individual sign-off:
-  1. Merge company pair A (Pass 1, domain-confirmed) — surviving record
+  1. Merge company pair A (Pass 1, domain-confirmed): surviving record
      shown with field-by-field precedence.
   2-6. [Merge company pairs B-F, same format]
   7. Review "Rivergate Analytics" / "Rivergate Data Labs" (Pass 2,
